@@ -18,7 +18,7 @@ spec:
         - DELETE
       filter:
         afterStart: true
-        fields:
-          - key: metadata.name
-            operation: "=="
-            value: lingxiantest
+        # fields:
+        #   - key: metadata.name
+        #     operation: "=="
+        #     value: lingxiantest

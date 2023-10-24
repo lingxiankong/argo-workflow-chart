@@ -33,14 +33,14 @@ spec:
                 arguments:
                   parameters:
                     - name: name
-                      value: null
+                      value: "{{ .Values.name }}"
           parameters:
             - src:
                 dependencyName: deployment-change
                 dataTemplate: "{- .Input.body.metadata.name -}-"
               dest: metadata.generateName
               operation: append
-            - src:
-                dependencyName: deployment-change
-                dataKey: body.metadata.name
-              dest: spec.arguments.parameters.0.value
+            # - src:
+            #     dependencyName: deployment-change
+            #     dataKey: body.metadata.name
+            #   dest: spec.arguments.parameters.0.value
