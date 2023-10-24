@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: log
+  namespace: default
+spec:
+  template:
+    serviceAccountName: argo-test
+  dependencies:
+    - name: deployment-change
+      eventSourceName: deployment-events
+      eventName: deployment-change
+  triggers:
+    - template:
+        name: log-trigger
+        conditions: deployment-change
+        log:
+          intervalSeconds: 20
+    - template:
+        name: argo-workflow-trigger
+        conditions: deployment-change
+        argoWorkflow:
+          operation: submit
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: change-deployment-
+              spec:
+                workflowTemplateRef:
+                  name: simple-wftmpl
+                arguments:
+                  parameters:
+                    - name: name
+                      value: null
+          parameters:
+            - src:
+                dependencyName: deployment-change
+                dataTemplate: "{- .Input.body.metadata.name -}-"
+              dest: metadata.generateName
+              operation: append
+            - src:
+                dependencyName: deployment-change
+                dataKey: body.metadata.name
+              dest: spec.arguments.parameters.0.value

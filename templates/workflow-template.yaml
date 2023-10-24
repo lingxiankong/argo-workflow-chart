@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: simple-wftmpl
+  namespace: default
+spec:
+  workflowMetadata:
+    labels: {}
+  serviceAccountName: argo-test
+
+  arguments:
+    parameters:
+      - name: name
+
+  entrypoint: main
+
+  templates:
+  - name: main
+    container:
+      image: docker/whalesay:latest
+      command: [cowsay]
+      args: ["{- workflow.parameters.name -}"]

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: deployment-events
+  namespace: default
+spec:
+  template:
+    serviceAccountName: argo-test
+  resource:
+    deployment-change:
+      namespace: default
+      group: apps
+      version: v1
+      resource: deployments
+      eventTypes:
+        - ADD
+        - UPDATE
+        - DELETE
+      filter:
+        afterStart: true
+        fields:
+          - key: metadata.name
+            operation: "=="
+            value: lingxiantest
