@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: log
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   template:
     serviceAccountName: argo-test

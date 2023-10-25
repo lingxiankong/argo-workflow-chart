@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: deployment-events
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   template:
     serviceAccountName: argo-test
